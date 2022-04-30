@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using StringCombo.Models;
 
 namespace StringCombo.Services;
 
@@ -11,7 +12,7 @@ public class WordCombinationService
         _logger = logger;
     }
     
-    public Task GetCombinationsAsync(CancellationToken stoppingToken = default)
+    public Task GetCombinationsAsync(CommandOptions commandOptions, CancellationToken stoppingToken = default)
     {
         _logger.LogInformation("Doing something");
         return Task.CompletedTask;

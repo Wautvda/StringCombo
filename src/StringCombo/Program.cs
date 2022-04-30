@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CommandLine;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using StringCombo;
+using StringCombo.Models;
 using StringCombo.Services;
 
 var host =
@@ -27,7 +29,11 @@ var host =
         .Build();
 
 var wordCombinationService = host.Services.GetRequiredService<WordCombinationService>();
-await wordCombinationService.GetCombinationsAsync();
+await Parser.Default
+    .ParseArguments<CommandOptions>(args)
+    .MapResult(
+        async (CommandOptions commandOptions) => await wordCombinationService.GetCombinationsAsync(commandOptions)
+        ,_ => Task.FromResult(-1));
 
 Console.WriteLine("press enter to exit");
 Console.ReadLine();
