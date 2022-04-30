@@ -16,4 +16,14 @@
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Data" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Data\input.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
