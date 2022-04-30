@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using StringCombo;
 using StringCombo.Services;
 
 var host =
@@ -17,7 +18,12 @@ var host =
                     .WriteTo.Console();
             }
         )
-        .ConfigureServices(services => { services.AddTransient<WordCombinationService>(); })
+        .ConfigureServices(services =>
+        {
+            services
+                .AddTransient<WordCombinationService>()
+                .AddStringComboServices();
+        })
         .Build();
 
 var wordCombinationService = host.Services.GetRequiredService<WordCombinationService>();

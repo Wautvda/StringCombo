@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringCombo", "StringCombo\StringCombo.csproj", "{6BA1D292-3EA8-477F-B83B-9EFF8E5B497D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{40BEC2D2-2A67-44D1-8D93-584832B65766}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringCombo.UnitTests", "Tests\StringCombo.UnitTests\StringCombo.UnitTests.csproj", "{35386C34-74F5-424E-B78A-70342130CBAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,12 @@ Global
 		{6BA1D292-3EA8-477F-B83B-9EFF8E5B497D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BA1D292-3EA8-477F-B83B-9EFF8E5B497D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BA1D292-3EA8-477F-B83B-9EFF8E5B497D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35386C34-74F5-424E-B78A-70342130CBAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35386C34-74F5-424E-B78A-70342130CBAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35386C34-74F5-424E-B78A-70342130CBAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35386C34-74F5-424E-B78A-70342130CBAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{35386C34-74F5-424E-B78A-70342130CBAD} = {40BEC2D2-2A67-44D1-8D93-584832B65766}
 	EndGlobalSection
 EndGlobal
