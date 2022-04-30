@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging.Abstractions;
 using StringCombo.File;
 using Xunit;
 
@@ -10,7 +11,7 @@ public class FileReaderTests
     private readonly IFileReader _reader;
     public FileReaderTests()
     {
-        _reader = new FileReader();
+        _reader = new FileReader(NullLogger<FileReader>.Instance);
     }
     
     [Fact]
