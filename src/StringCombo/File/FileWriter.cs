@@ -11,8 +11,14 @@ public class FileWriter : IFileWriter
     {
         _logger = logger;
     }
-    public void WriteToFile(string folder, IEnumerable<JoinableString> values)
+    public void WriteToFile(string? folder, IEnumerable<JoinableString> values)
     {
+        if (folder == null)
+        {
+            _logger.LogError("Output folder is required to create and output file, but none provided. No output file will be created");
+            return;
+        }
+        
         if(!Directory.Exists(folder))
         {
             _logger.LogDebug("Creating folder {Folder}", folder);

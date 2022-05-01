@@ -31,6 +31,11 @@ public class WordCombinationService
 
     public Task GetCombinationsAsync(CancellationToken cancellationToken = default)
     {
+        if (_commandOptions.Path == null)
+        {
+            _logger.LogError("Input path is required, but none provided");
+            return Task.CompletedTask;
+        }
         var inputCollection = _fileReader.GetRecordsFromFile(_commandOptions.Path).ToList();
         var combinationResult = _combinableListProvider.GetJoinableStrings(inputCollection, cancellationToken);
         _fileWriter.WriteToFile(_commandOptions.OutputFolder, combinationResult);
