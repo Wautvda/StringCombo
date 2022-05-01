@@ -1,27 +1,40 @@
 using System.Text;
+using Microsoft.Extensions.Logging;
 using StringCombo.Models;
 
 namespace StringCombo.File;
 
 public class FileWriter : IFileWriter
 {
+    private readonly ILogger<FileWriter> _logger;
+    public FileWriter(ILogger<FileWriter> logger)
+    {
+        _logger = logger;
+    }
     public void WriteToFile(string folder, IEnumerable<JoinableString> values)
     {
         if(!Directory.Exists(folder))
         {
+            _logger.LogDebug("Creating folder {Folder}", folder);
             Directory.CreateDirectory(folder);
         }
         
-        FileStream? stream = null;  
-        try  
-        {  
-            stream = new FileStream($"{folder}/output.{DateTime.Now:yyyy-MM-dd_HH-mm-ss-fff}.txt", FileMode.OpenOrCreate);  
-            using var writer = new StreamWriter(stream, Encoding.UTF8 );
+        FileStream? stream = null;
+        var filePath = $"{folder}/output.{DateTime.Now:yyyy-MM-dd_HH-mm-ss-fff}.txt";
+        try
+        {
+            stream = new FileStream(filePath, FileMode.OpenOrCreate);
+            using var writer = new StreamWriter(stream, Encoding.UTF8);
             foreach (var value in values)
             {
-                writer.WriteLine(value.GetOutput());  
+                writer.WriteLine(value.GetOutput());
             }
-        }  
+            _logger.LogInformation("Result written to '{FilePath}'", filePath);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error occured");
+        }
         finally
         {
             stream?.Dispose();

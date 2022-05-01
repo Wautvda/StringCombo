@@ -12,6 +12,7 @@ public class WordCombinationService
     private readonly IFileReader _fileReader;
     private readonly CommandOptions _commandOptions;
     private readonly ICombinableListProvider _combinableListProvider;
+    private readonly IFileWriter _fileWriter;
 
     public WordCombinationService(
         ILogger<WordCombinationService> logger
@@ -25,12 +26,14 @@ public class WordCombinationService
         _fileReader = fileReader;
         _commandOptions = commandOptions.Value;
         _combinableListProvider = combinableListProvider;
+        _fileWriter = fileWriter;
     }
 
     public Task GetCombinationsAsync(CancellationToken stoppingToken = default)
     {
         var inputCollection = _fileReader.GetRecordsFromFile(_commandOptions.Path).ToList();
-        _combinableListProvider.GetJoinableStrings(inputCollection);
+        var combinationResult = _combinableListProvider.GetJoinableStrings(inputCollection);
+        _fileWriter.WriteToFile(_commandOptions.OutputFolder, combinationResult);
         return Task.CompletedTask;
     }
 }
