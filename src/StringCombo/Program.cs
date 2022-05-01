@@ -34,7 +34,13 @@ var host =
         .Build();
 
 var wordCombinationService = host.Services.GetRequiredService<WordCombinationService>();
-await wordCombinationService.GetCombinationsAsync();
+var cts = new CancellationTokenSource();
+Console.CancelKeyPress += (s, e) =>
+{
+    cts.Cancel();
+    e.Cancel = true;
+};
+await wordCombinationService.GetCombinationsAsync(cts.Token);
 
 Console.WriteLine("press enter to exit");
 Console.ReadLine();

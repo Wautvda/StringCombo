@@ -8,7 +8,7 @@ namespace StringCombo.Provider;
 
 public interface ICombinableListProvider
 {
-    List<JoinableString> GetJoinableStrings(IList<string> values);
+    List<JoinableString> GetJoinableStrings(IList<string> values, CancellationToken token = default);
 }
 
 public class CombinableListProvider : ICombinableListProvider
@@ -28,11 +28,15 @@ public class CombinableListProvider : ICombinableListProvider
         _logger = logger;
     }
 
-    public List<JoinableString> GetJoinableStrings(IList<string> values)
+    public List<JoinableString> GetJoinableStrings(IList<string> values, CancellationToken cancellationToken = default)
     {
         var result = new List<JoinableString>();
         for (int i = 0; i < values.Count; i++)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                break;
+            }
             var value = new JoinableString(values.ElementAt(i));
             switch (_validator.Validate(value, _commandOptions.Length))
             {
@@ -43,7 +47,7 @@ public class CombinableListProvider : ICombinableListProvider
                 case ToLongValidationException:
                     continue;
                 case ToShortValidationException:
-                    result.AddRange(Combine(new Dictionary<int, string> { { i, values.ElementAt(i) } }, values));
+                    result.AddRange(Combine(new Dictionary<int, string> { { i, values.ElementAt(i) } }, values, cancellationToken));
                     continue;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -53,11 +57,16 @@ public class CombinableListProvider : ICombinableListProvider
         return result;
     }
 
-    private IEnumerable<JoinableString> Combine(Dictionary<int, string> combined, IList<string> values)
+    private IEnumerable<JoinableString> Combine(Dictionary<int, string> combined, IList<string> values, CancellationToken cancellationToken)
     {
         var result = new List<JoinableString>();
         for (int i = 0; i < values.Count; i++)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                break;
+            }
+
             if (combined.ContainsKey(i))
             {
                 continue;
@@ -74,7 +83,7 @@ public class CombinableListProvider : ICombinableListProvider
                     continue;
                 case ToShortValidationException:
                     combined.Add(i, value);
-                    result.AddRange(Combine(combined, values));
+                    result.AddRange(Combine(combined, values, cancellationToken));
                     continue;
                 default:
                     throw new ArgumentOutOfRangeException();

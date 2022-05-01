@@ -29,10 +29,10 @@ public class WordCombinationService
         _fileWriter = fileWriter;
     }
 
-    public Task GetCombinationsAsync(CancellationToken stoppingToken = default)
+    public Task GetCombinationsAsync(CancellationToken cancellationToken = default)
     {
         var inputCollection = _fileReader.GetRecordsFromFile(_commandOptions.Path).ToList();
-        var combinationResult = _combinableListProvider.GetJoinableStrings(inputCollection);
+        var combinationResult = _combinableListProvider.GetJoinableStrings(inputCollection, cancellationToken);
         _fileWriter.WriteToFile(_commandOptions.OutputFolder, combinationResult);
         return Task.CompletedTask;
     }
