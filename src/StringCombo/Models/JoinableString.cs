@@ -2,6 +2,8 @@ namespace StringCombo.Models;
 
 public class JoinableString
 {
+    public int Length => ToString().Length;
+    
     private readonly IEnumerable<string> _values;
     
     public JoinableString(params string [] values)
